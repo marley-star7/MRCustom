@@ -1,0 +1,12 @@
+{
+	"id": "marleystar7.marcustom",
+	"name": "MRCustom",
+	"version": "0.0.1",
+	"authors": "marleystar7",
+	"description": "A big ol' library to share functionality between mods I make.",
+	"requirements": [],
+	"requirements_names": [],
+	"priorities": [ "moreslugcats" ],
+	"tags": [ "Dependency" ],
+	"checksum_override_version": false
+}
