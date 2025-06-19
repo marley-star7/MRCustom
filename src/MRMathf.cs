@@ -5,6 +5,17 @@ namespace MRCustom.Math;
 public static class MarMathf
 {
     /// <summary>
+    /// Snaps the value to the closest value of snap increment.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="snapValue"></param>
+    /// <returns></returns>
+    public static float Snap(float value, float snapValue)
+    {
+        return Mathf.Round(value / snapValue) * snapValue;
+    }
+
+    /// <summary>
     /// Returns an Inverse Lerp value from -1 to 1.
     /// </summary>
     /// <param name="a"></param>

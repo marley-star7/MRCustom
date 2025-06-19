@@ -1,4 +1,8 @@
-﻿/*
+﻿//
+// Abandonded like the trash it is.
+//
+
+/*
 namespace MRCustom.Animations;
 
 /// <summary>

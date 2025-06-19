@@ -1,10 +1,9 @@
-﻿/*
-using UnityEngine;
+﻿using UnityEngine;
 using RWCustom;
 
 using MRCustom.Animations;
 
-namespace MRCustom.Hooks;
+namespace MRCustom;
 
 public static partial class Hooks
 {
@@ -23,6 +22,10 @@ public static partial class Hooks
     private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
+
+        var playerHandAnimationData = self.player.GetHandAnimationPlayer();
+
+        if (playerHandAnimationData != null)
+            playerHandAnimationData.GraphicsUpdate();
     }
 }
-*/

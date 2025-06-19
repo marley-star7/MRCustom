@@ -5,8 +5,18 @@ using System.Reflection;
 
 namespace MRCustom.Animations;
 
-public class PlayerHandAnimationData
+public class PlayerHandAnimationPlayer : MRAnimationPlayer<Player>
 {
+    //
+    // ANIMATION PLAYER STUFF
+    //
+
+    public HandAnimationIndex currentAnimationIndex;
+
+    //
+    // ANIMATION DATA
+    //
+
     public partial class HandAnimationIndex : ExtEnum<HandAnimationIndex>
     {
         public static readonly HandAnimationIndex None = new HandAnimationIndex("None", register: true);
@@ -17,24 +27,9 @@ public class PlayerHandAnimationData
         }
     }
 
-    public HandAnimationIndex handAnimationIndex;
-    public PlayerHandAnimation handAnimation;
-
-    public void PlayHandAnimation(PlayerHandAnimation newHandAnimation)
-    {
-        if (handAnimation != newHandAnimation)
-        {
-            handAnimation = newHandAnimation;
-            if (playerRef.TryGetTarget(out Player player))
-            {
-                handAnimation.Play(player);
-            }
-        }
-    }
-
     public WeakReference<Player> playerRef;
 
-    public PlayerHandAnimationData(Player player)
+    public PlayerHandAnimationPlayer(Player player) : base(player)
     {
         this.playerRef = new WeakReference<Player>(player);
     }
@@ -45,9 +40,9 @@ public class PlayerHandAnimationData
 /// </summary>
 public static class PlayerHandAnimationPlayerExtension
 {
-    private static readonly ConditionalWeakTable<Player, PlayerHandAnimationData> handAnimationDataConditionalWeakTable = new();
+    private static readonly ConditionalWeakTable<Player, PlayerHandAnimationPlayer> handAnimationDataConditionalWeakTable = new();
 
-    public static PlayerHandAnimationData GetHandAnimationData(this Player player) => handAnimationDataConditionalWeakTable.GetValue(player, _ => new PlayerHandAnimationData(player));
+    public static PlayerHandAnimationPlayer GetHandAnimationPlayer(this Player player) => handAnimationDataConditionalWeakTable.GetValue(player, _ => new PlayerHandAnimationPlayer(player));
 
     //
     // OLD OVERENGINEERED ANIMATION SYSTEM

@@ -1,12 +1,7 @@
-﻿/*
-// This whole thing is stupid, and overcomplicated probably,
-// but I couldn't think of a better way to do it without just making all hand animations a big line of if statements.
+﻿namespace MRCustom.Animations;
 
-namespace MRCustom.Animations;
-
-public sealed class MRAnimationPlayer<T> where T : PhysicalObject
+public class MRAnimationPlayer<T> where T : PhysicalObject
 {
-    public MRAnimationPlayerIndex<T>? index = null;
     public MRAnimation<T>? currentAnimation = null;
 
     public int animationTimer = 0;
@@ -14,10 +9,9 @@ public sealed class MRAnimationPlayer<T> where T : PhysicalObject
 
     public WeakReference<T> ownerRef;
 
-    public MRAnimationPlayer(T owner, MRAnimationPlayerIndex<T>? index)
+    public MRAnimationPlayer(T owner)
     {
         this.ownerRef = new WeakReference<T>(owner);
-        this.index = index;
     }
 
     // Just for ease of use refrencing.
@@ -30,13 +24,12 @@ public sealed class MRAnimationPlayer<T> where T : PhysicalObject
         }
     }
 
-    public void Play(string animationName)
-    {
-        if (index.Animations.TryGetValue(animationName, out var animation))
-            Play(animation);
-    }
-
-    private void Play(MRAnimation<T> animation)
+    /// <summary>
+    /// Play the animation if paused,
+    /// Start it for the first time if it is a new animation.
+    /// </summary>
+    /// <param name="animation"></param>
+    public void Play(MRAnimation<T> animation)
     {
         isPlaying = true;
 
@@ -58,16 +51,33 @@ public sealed class MRAnimationPlayer<T> where T : PhysicalObject
         isPlaying = false;
     }
 
-    public void Stop()
+    /// <summary>
+    /// Stop only if current animation is same as requested to stop.
+    /// </summary>
+    /// <param name="animation"></param>
+    public void Stop(MRAnimation<T> animation)
     {
-        isPlaying = false;
-        animationTimer = 0;
+        if (currentAnimation == animation)
+        {
+            currentAnimation.Stop(owner);
+            currentAnimation = null;
 
-        currentAnimation.Stop(owner);
-        currentAnimation = null;
+            isPlaying = false;
+            animationTimer = 0;
+        }
     }
 
-    public Action<string> AnimationFinished;
+
+    public void Stop()
+    {
+        currentAnimation.Stop(owner);
+        currentAnimation = null;
+
+        isPlaying = false;
+        animationTimer = 0;
+    }
+
+    public Action<MRAnimation<T>?> AnimationFinished;
 
     public void Update()
     {
@@ -76,22 +86,29 @@ public sealed class MRAnimationPlayer<T> where T : PhysicalObject
 
         animationTimer++;
 
-        if (animationTimer > currentAnimation.GetLength(owner))
-        {
-            var finishedAnim = currentAnimation;
-            Stop();
-            AnimationFinished?.Invoke(finishedAnim.Name);
-        }
+        currentAnimation.Update(animationTimer);
 
-        currentAnimation.Update(owner, animationTimer);
+        if (animationTimer > currentAnimation.Length)
+            FinishAnimation();
     }
 
+    // TODO: find out how to do delta junk or whatever for the proper animationTimer++ timing when updating, idk what rain world uses.
     public void GraphicsUpdate()
     {
         if (!isPlaying || currentAnimation == null)
             return;
 
-        currentAnimation.UpdateGraphics(owner, animationTimer);
+        currentAnimation.GraphicsUpdate(animationTimer);
+
+        // I do this in both because, playing is safe :[ 
+        if (animationTimer > currentAnimation.Length)
+            FinishAnimation();
+    }
+
+    private void FinishAnimation()
+    {
+        var finishedAnim = currentAnimation;
+        Stop();
+        AnimationFinished?.Invoke(finishedAnim);
     }
 }
-*/

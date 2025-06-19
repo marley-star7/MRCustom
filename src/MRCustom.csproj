@@ -8,7 +8,14 @@
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <RootNamespace>MRCustom</RootNamespace>
     <AssemblyName>MRCustom</AssemblyName>
+    <PackageId>marcustom</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="..\lib\BepInEx.dll">
@@ -20,7 +27,9 @@
     <Reference Include="..\lib\HOOKS-Assembly-CSharp.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="..\lib\ImprovedInput.dll" />
+    <Reference Include="..\lib\ImprovedInput.dll">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="..\lib\MonoMod.RuntimeDetour.dll">
       <Private>False</Private>
     </Reference>
@@ -41,6 +50,11 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\slugcrafting\lib\PUBLIC-Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\slugcrafting\lib\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
@@ -74,10 +88,6 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="obj\" />
-  </ItemGroup>
-
   <!-- PostBuild Target -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(RainWorldDir)')">
     <Message Importance="high" Text="PostBuild target is running..." />
@@ -86,8 +96,16 @@
       <Assets Include="$(ProjectDir)../assets/**/*.*" />
     </ItemGroup>
     
-    <Copy SourceFiles="@(Assets)" DestinationFiles="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/$(ProjectName)/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/$(ProjectName)/plugins" />
+    <Copy SourceFiles="@(Assets)" DestinationFiles="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/marcustom/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/marcustom/plugins" />
   </Target>
+
+    <!-- Custom Copy to slugcrafting\lib on Debug build -->
+    <Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">
+	    <Message Importance="high" Text="Copying DLL to slugcrafting and ccg" />
+	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />
+    </Target>
+
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace MRCustom;
 
-public static partial class Events
+public static partial class MREvents
 {
     //
     // APPLY/REMOVE HOOKS
@@ -12,6 +12,8 @@ public static partial class Events
         On.Creature.Grab += Creature_Grab;
         On.Creature.ReleaseGrasp += Creature_ReleaseGrasp;
         On.Creature.SwitchGrasps += Creature_SwitchGrasp;
+
+        On.Player.Collide += Player_Collide;
     }
 
     // Add hooks
@@ -20,10 +22,16 @@ public static partial class Events
         On.Creature.Grab -= Creature_Grab;
         On.Creature.ReleaseGrasp -= Creature_ReleaseGrasp;
         On.Creature.SwitchGrasps -= Creature_SwitchGrasp;
+
+        On.Player.Collide -= Player_Collide;
     }
 
     //
     // EVENT HOOKAGE
+    //
+
+    //
+    // CREATURES
     //
 
     private static bool Creature_Grab(On.Creature.orig_Grab orig, Creature self, PhysicalObject grabbedObj, int graspUsed, int chunkGrabbed, Creature.Grasp.Shareability shareability, float dominance, bool overrideEquallyDominant, bool pacifying)
@@ -53,6 +61,16 @@ public static partial class Events
         OnCreatureSwitchGrasp?.Invoke(self, fromGrasp, toGrasp);
         if (self is Player)
             OnPlayerSwitchGrasp?.Invoke((Player)self, fromGrasp, toGrasp);
+    }
+
+    //
+    // PLAYERS
+    //
+
+    private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
+    {
+        orig(self, otherObject, myChunk, otherChunk);
+            OnPlayerCollide?.Invoke(self, otherObject, myChunk, otherChunk);
     }
 
     //
@@ -92,4 +110,9 @@ public static partial class Events
     /// Event triggered when a player switches held object to another grasp.
     /// </summary>
     public static event Action<Player, int, int> OnPlayerSwitchGrasp;
+
+    /// <summary>
+    /// Event triggered whenever the player collides.
+    /// </summary>
+    public static event Action<Player, PhysicalObject, int, int> OnPlayerCollide;
 }

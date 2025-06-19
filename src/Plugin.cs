@@ -4,6 +4,7 @@ using RWCustom;
 
 using Fisobs.Core;
 using ImprovedInput;
+using BepInEx.Logging;
 
 namespace MRCustom;
 
@@ -13,44 +14,67 @@ namespace MRCustom;
 //[BepInDependency("author.some_other_mods_guid", BepInDependency.DependencyFlags.HardDependency)]
 
 [BepInPlugin(ID, NAME, VERSION)]
-[BepInDependency("improved-input-config", BepInDependency.DependencyFlags.SoftDependency)]
 
 sealed class Plugin : BaseUnityPlugin
 {
-    public const string ID = "marleystar7.marcustom"; // This should be the same as the id in modinfo.json!
+    public const string ID = "marley-star7.marcustom"; // This should be the same as the id in modinfo.json!
     public const string NAME = "MRCustom"; // This should be a human-readable version of your mod's name. This is used for log files and also displaying which mods get loaded. In general, it's a good idea to match this with your modinfo.json as well.
     public const string VERSION = "0.0.1"; // This follows semantic versioning. For more information, see https://semver.org/ - again, match what you have in modinfo.json
 
+    public static bool isPostInit;
     public static bool restartMode = false;
 
-    /// <summary>
-    /// This method is called when the plugin is enabled
-    /// </summary>
+    public static bool improvedInputEnabled;
+    public static int improvedInputVersion = 0;
+
+    internal static ManualLogSource Logger;
+
+
     public void OnEnable()
     {
-        Logger.LogInfo("MRLibrary is loaded!");
-        Events.ApplyEvents();
+        Logger = base.Logger;
+
+        On.RainWorld.OnModsInit += Extras.WrapInit(LoadPlugin);
+        On.RainWorld.PostModsInit += RainWorld_PostModsInit;
+
+        Logger.LogInfo("MRCustom is loaded!");
     }
 
-    /// <summary>
-    /// This method is called when the plugin is disabled
-    /// </summary>
+    private static void LoadPlugin(RainWorld rainWorld)
+    {
+        if (!restartMode)
+        {
+            Hooks.ApplyHooks();
+            MREvents.ApplyEvents();
+        }
+
+        Futile.atlasManager.LoadAtlas("atlases/marError64");
+        Futile.atlasManager.LoadAtlas("atlases/marNothing");
+    }
+
     public void OnDisable()
     {
-        Events.RemoveEvents();
+        if (restartMode)
+        {
+            Hooks.RemoveHooks();
+            MREvents.RemoveEvents();
+        }
     }
 
-    // TODO: add wrapInit function, that just calles the orig self, removing the need for the line?
-
-    /// <summary>
-    /// Loads the resources needed for the mod.
-    /// For example, load textures, sounds, etc.
-    /// You can use the Futile.atlasManager.LoadAtlas method to load atlases.
-    /// </summary>
-    /// <param name="orig"></param>
-    /// <param name="self"></param>
-    private static void LoadResources(On.RainWorld.orig_OnModsInit orig, RainWorld self)
+    internal static void RainWorld_PostModsInit(On.RainWorld.orig_PostModsInit orig, RainWorld rainWorld)
     {
-        orig(self);
+        orig(rainWorld);
+
+        try
+        {
+            if (Plugin.isPostInit)
+                return;
+            else
+                Plugin.isPostInit = true;
+        }
+        catch (Exception e)
+        {
+            Plugin.Logger.LogError(e.Message);
+        }
     }
 }

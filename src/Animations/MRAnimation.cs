@@ -1,10 +1,8 @@
-﻿/*
-namespace MRCustom.Animations;
+﻿namespace MRCustom.Animations;
 
-public interface MRAnimation<T> where T : PhysicalObject
+public abstract class MRAnimation<T> where T : PhysicalObject
 {
-    public string Name { get; set; }
-
+    /*
     public enum LoopModeEnum
     {
         None,
@@ -12,11 +10,32 @@ public interface MRAnimation<T> where T : PhysicalObject
         PingPong
     }
     public LoopModeEnum LoopMode;
+    */
 
-    public float GetLength(T owner);
-    public void Start(T owner);
-    public void Stop(T owner);
-    public void Update(T owner, int animationTime);
-    public void UpdateGraphics(T owner, int animationTime);
+    protected T owner;
+    public float Length;
+
+    /// <summary>
+    /// Start the animation.
+    /// </summary>
+    /// <param name="owner"></param>
+    public virtual void Start(T owner)
+    {
+        this.owner = owner;
+    }
+    /// <summary>
+    /// Stops the animation.
+    /// </summary>
+    /// <param name="owner"></param>
+    public abstract void Stop(T owner);
+    /// <summary>
+    /// Ran on normal update.
+    /// </summary>
+    /// <param name="animationTime"></param>
+    public abstract void Update(int animationTimer);
+    /// <summary>
+    /// Ran on graphics update.
+    /// </summary>
+    /// <param name="animationTime"></param>
+    public abstract void GraphicsUpdate(int animationTimer);
 }
-*/
