@@ -88,6 +88,11 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Player\" />
+    <Folder Include="RoomCamera\" />
+  </ItemGroup>
+
   <!-- PostBuild Target -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(RainWorldDir)')">
     <Message Importance="high" Text="PostBuild target is running..." />
@@ -100,12 +105,12 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/marcustom/plugins" />
   </Target>
 
-    <!-- Custom Copy to slugcrafting\lib on Debug build -->
+    <!-- Custom Copy to slugcrafting\lib, compartmentalizedcreaturegraphics\lib, and designmyslugcat\lib on Debug build -->
     <Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">
-	    <Message Importance="high" Text="Copying DLL to slugcrafting and ccg" />
+	    <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />
 	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />
     </Target>
-
 
 </Project>

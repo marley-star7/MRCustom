@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MRCustom.Collections
+﻿namespace MRCustom.Collections
 {
     // Explanation to argue this types consistent existance and use can be found here: https://youtu.be/WwkuAqObplU?t=2595
     // Basically, deleting elements from a list is expensive due to re-orienting, so this functions when that is not needed to be less so by... not re-orienting.

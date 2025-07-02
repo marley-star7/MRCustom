@@ -1,7 +1,4 @@
-﻿using RWCustom;
-using UnityEngine;
-
-namespace MRCustom;
+﻿namespace MRCustom.Extensions;
 
 public static class CreatureExtension
 {

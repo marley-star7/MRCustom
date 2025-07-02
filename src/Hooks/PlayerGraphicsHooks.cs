@@ -1,20 +1,17 @@
-﻿using UnityEngine;
-using RWCustom;
+﻿using MRCustom.Animations;
 
-using MRCustom.Animations;
+namespace MRCustom.Hooks;
 
-namespace MRCustom;
-
-public static partial class Hooks
+public static class PlayerGraphicsHooks
 {
     // Add hooks
-    public static void ApplyPlayerGraphicsHooks()
+    internal static void ApplyHooks()
     {
         On.PlayerGraphics.Update += PlayerGraphics_Update;
     }
 
     // Remove hooks
-    public static void RemovePlayerGraphicsHooks()
+    internal static void RemoveHooks()
     {
         On.PlayerGraphics.Update -= PlayerGraphics_Update;
     }

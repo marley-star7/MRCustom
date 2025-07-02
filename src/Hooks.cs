@@ -1,14 +1,6 @@
-﻿using System;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using Fisobs.Core;
-using BepInEx;
+﻿namespace MRCustom.Hooks;
 
-namespace MRCustom;
-
-public static partial class Hooks
+public static class Hooks
 {
     private static void ApplyRainWorldGameHooks()
     {
@@ -24,25 +16,9 @@ public static partial class Hooks
     {
         if (Plugin.restartMode)
         {
-            ApplyHooks();
+            Plugin.ApplyHooks();
 
             Plugin.RainWorld_PostModsInit((_) => { }, self.rainWorld);
         }
-    }
-
-    // Add hooks
-    public static void ApplyHooks()
-    {
-        ApplyPlayerHooks();
-        ApplyPlayerGraphicsHooks();
-    }
-
-    // Remove hooks
-    public static void RemoveHooks()
-    {
-        On.RainWorld.PostModsInit -= Plugin.RainWorld_PostModsInit;
-
-        RemovePlayerHooks();
-        RemovePlayerGraphicsHooks();
     }
 }

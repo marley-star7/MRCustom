@@ -1,21 +1,18 @@
-using RWCustom;
-using UnityEngine;
-
 using MRCustom.Animations;
 
-namespace MRCustom;
+namespace MRCustom.Hooks;
 
-public static partial class Hooks
+public static class PlayerHooks
 {
     // Add hooks
-    public static void ApplyPlayerHooks()
+    internal static void ApplyHooks()
     {
         On.Player.NewRoom += Player_NewRoom;
         On.Player.Update += Player_Update;
     }
 
     // Remove hooks
-    public static void RemovePlayerHooks()
+    internal static void RemoveHooks()
     {
         On.Player.NewRoom -= Player_NewRoom;
         On.Player.Update -= Player_Update;

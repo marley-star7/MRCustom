@@ -1,6 +1,6 @@
 ﻿using static Player;
 
-namespace MRCustom;
+namespace MRCustom.Extensions;
 
 public static class PlayerExtension
 {

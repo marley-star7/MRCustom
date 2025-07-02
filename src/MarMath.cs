@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace MRCustom.Math;
+﻿namespace MRCustom.Math;
 
 public static class MarMath
 {

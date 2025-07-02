@@ -1,10 +1,4 @@
-﻿using BepInEx;
-using UnityEngine;
-using RWCustom;
-
-using Fisobs.Core;
-using ImprovedInput;
-using BepInEx.Logging;
+﻿using MRCustom.Hooks;
 
 namespace MRCustom;
 
@@ -23,6 +17,8 @@ sealed class Plugin : BaseUnityPlugin
 
     public static bool isPostInit;
     public static bool restartMode = false;
+
+    public static bool isSplitScreenCoopEnabled = false;
 
     public static bool improvedInputEnabled;
     public static int improvedInputVersion = 0;
@@ -44,7 +40,7 @@ sealed class Plugin : BaseUnityPlugin
     {
         if (!restartMode)
         {
-            Hooks.ApplyHooks();
+            ApplyHooks();
             MREvents.ApplyEvents();
         }
 
@@ -56,7 +52,7 @@ sealed class Plugin : BaseUnityPlugin
     {
         if (restartMode)
         {
-            Hooks.RemoveHooks();
+            RemoveHooks();
             MREvents.RemoveEvents();
         }
     }
@@ -76,5 +72,35 @@ sealed class Plugin : BaseUnityPlugin
         {
             Plugin.Logger.LogError(e.Message);
         }
+
+        foreach (ModManager.Mod mod in ModManager.ActiveMods)
+        {
+            // if (mod.id == "crs") {
+            if (mod.id == "henpemaz_splitscreencoop")
+            {
+                isSplitScreenCoopEnabled = true;
+                continue;
+            }
+        }
+    }
+
+    // Add hooks
+    internal static void ApplyHooks()
+    {
+        PlayerHooks.ApplyHooks();
+        PlayerGraphicsHooks.ApplyHooks();
+
+        RoomCameraHooks.ApplyHooks();
+    }
+
+    // Remove hooks
+    internal static void RemoveHooks()
+    {
+        On.RainWorld.PostModsInit -= Plugin.RainWorld_PostModsInit;
+
+        PlayerHooks.RemoveHooks();
+        PlayerGraphicsHooks.RemoveHooks();
+
+        RoomCameraHooks.RemoveHooks();
     }
 }

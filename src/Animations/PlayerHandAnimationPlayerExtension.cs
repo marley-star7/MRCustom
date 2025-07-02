@@ -1,9 +1,4 @@
-﻿using RWCustom;
-using UnityEngine;
-using System.Runtime.CompilerServices;
-using System.Reflection;
-
-namespace MRCustom.Animations;
+﻿namespace MRCustom.Animations;
 
 public class PlayerHandAnimationPlayer : MRAnimationPlayer<Player>
 {
