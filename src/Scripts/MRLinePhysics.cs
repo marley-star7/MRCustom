@@ -4,7 +4,7 @@
 /// A class for doing the calculations in making easy strings and cords and such visuals.
 /// Because I often forget how to copy paste the exact code for what I want lol, instead, we do it here.
 /// </summary>
-public class MRCord
+public class MRLinePhysics
 {
     public class Part
     {
@@ -76,17 +76,17 @@ public class MRCord
     // TODO: add this functionality
     public float swallowed = 0;
 
-    public MRCord(PhysicalObject owner, BodyChunk centerChunk, int totalParts)
+    public MRLinePhysics(PhysicalObject owner, BodyChunk centerChunk, int totalParts)
     {
         this.owner = owner;
         this.centerChunk = centerChunk;
 
-        parts = new MRCord.Part[totalParts];
+        parts = new MRLinePhysics.Part[totalParts];
         midPart = totalParts / 2;
 
         for (int i = 0; i < parts.Length; i++)
         {
-            parts[i] = new MRCord.Part(owner);
+            parts[i] = new MRLinePhysics.Part(owner);
         }
     }
 
@@ -110,7 +110,7 @@ public class MRCord
     ///-MR7: Basically stolen from source, mostly from FlyLure.
     /// </summary>
     /// <param name="i"></param>
-    private void ConnectStalkSegment(int i)
+    private void ConnectSegment(int i)
     {
         float length = partLength * (1f - swallowed);
         //
@@ -145,13 +145,13 @@ public class MRCord
         //-- Connect stalks from back to front,
         for (int i = 0; i < parts.Length; i++)
         {
-            ConnectStalkSegment(i);
+            ConnectSegment(i);
         }
 
         //-- and then from front to back.
         for (int i = parts.Length - 1; i >= 0; i--)
         {
-            ConnectStalkSegment(i);
+            ConnectSegment(i);
         }
 
         for (int i = 0; i < parts.Length; i++)
@@ -183,12 +183,12 @@ public class MRCord
         //-- Once more connect stalks from back to front,
         for (int i = 0; i < parts.Length; i++)
         {
-            ConnectStalkSegment(i);
+            ConnectSegment(i);
         }
         //-- and back again.
         for (int i = parts.Length - 1; i >= 0; i--)
         {
-            ConnectStalkSegment(i);
+            ConnectSegment(i);
         }
 
         //-- Loop through the forced part positions and set them.
