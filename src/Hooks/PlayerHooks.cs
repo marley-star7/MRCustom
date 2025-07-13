@@ -20,7 +20,7 @@ public static class PlayerHooks
 
     private static void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
     {
-        throw new NotImplementedException();
+        orig(self, newRoom);
     }
 
     // Not sure why there is a difference between EatMeatUpdate and MaulingUpdate, nor do I know if this does anything, but just to be safe?

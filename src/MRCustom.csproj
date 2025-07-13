@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <LangVersion>11</LangVersion>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <RootNamespace>MRCustom</RootNamespace>
     <AssemblyName>MRCustom</AssemblyName>
     <PackageId>marcustom</PackageId>
+    <BaseOutputPath>bin\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,12 +49,15 @@
     <Reference Include="..\lib\UnityEngine.InputLegacyModule.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\slugcrafting\lib\PUBLIC-Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\lib\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\slugcrafting\lib\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\lib\PUBLIC-Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -93,24 +97,23 @@
     <Folder Include="RoomCamera\" />
   </ItemGroup>
 
-  <!-- PostBuild Target -->
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(RainWorldDir)')">
-    <Message Importance="high" Text="PostBuild target is running..." />
-    
-    <ItemGroup>
-      <Assets Include="$(ProjectDir)../assets/**/*.*" />
-    </ItemGroup>
-    
-    <Copy SourceFiles="@(Assets)" DestinationFiles="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/marcustom/%(RecursiveDir)%(Filename)%(Extension)" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(RainWorldDir)/RainWorld_Data/StreamingAssets/mods/marcustom/plugins" />
-  </Target>
+	<Target Name="GenerateMod" AfterTargets="PostBuildEvent">
+		<ItemGroup>
+			<RemovePlugins Include="../marcustom/plugins/*.dll" />
+		</ItemGroup>
+		<ItemGroup>
+			<CopyPlugins Include="$(TargetPath)" />
+		</ItemGroup>
+		<Delete Files="@(RemovePlugins)" />
+		<Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../marcustom/plugins/" />
+	</Target>
 
-    <!-- Custom Copy to slugcrafting\lib, compartmentalizedcreaturegraphics\lib, and designmyslugcat\lib on Debug build -->
-    <Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">
-	    <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />
-	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />
-    </Target>
+	<!-- Custom Copy to slugcrafting\lib, compartmentalizedcreaturegraphics\lib, and designmyslugcat\lib on Debug build -->
+    <!--<Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">-->
+	<!--    <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />-->
+	<!--    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />-->
+	<!--	<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />-->
+	<!--	<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />-->
+    <!--</Target>-->
 
 </Project>

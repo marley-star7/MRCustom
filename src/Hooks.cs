@@ -14,6 +14,8 @@ public static class Hooks
 
     private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
     {
+        //orig(self, manager);
+
         if (Plugin.restartMode)
         {
             Plugin.ApplyHooks();
