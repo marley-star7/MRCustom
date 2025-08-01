@@ -1,4 +1,4 @@
-﻿using MRCustom.Hooks;
+﻿using MRCustom.Events;
 
 namespace MRCustom;
 
@@ -23,8 +23,9 @@ sealed class Plugin : BaseUnityPlugin
     public static bool improvedInputEnabled;
     public static int improvedInputVersion = 0;
 
-    internal static ManualLogSource Logger;
-
+    #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    private static new ManualLogSource Logger;
+    #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     public void OnEnable()
     {
@@ -40,7 +41,7 @@ sealed class Plugin : BaseUnityPlugin
     {
         if (!restartMode)
         {
-            ApplyHooks();
+            Hooks.ApplyHooks();
             MREvents.ApplyEvents();
         }
 
@@ -52,7 +53,7 @@ sealed class Plugin : BaseUnityPlugin
     {
         if (restartMode)
         {
-            RemoveHooks();
+            Hooks.RemoveHooks();
             MREvents.RemoveEvents();
         }
     }
@@ -84,23 +85,15 @@ sealed class Plugin : BaseUnityPlugin
         }
     }
 
-    // Add hooks
-    internal static void ApplyHooks()
-    {
-        PlayerHooks.ApplyHooks();
-        PlayerGraphicsHooks.ApplyHooks();
+    internal static void LogInfo(object ex) => Logger.LogInfo(ex);
 
-        RoomCameraHooks.ApplyHooks();
-    }
+    internal static void LogMessage(object ex) => Logger.LogMessage(ex);
 
-    // Remove hooks
-    internal static void RemoveHooks()
-    {
-        On.RainWorld.PostModsInit -= Plugin.RainWorld_PostModsInit;
+    internal static void LogDebug(object ex) => Logger.LogDebug(ex);
 
-        PlayerHooks.RemoveHooks();
-        PlayerGraphicsHooks.RemoveHooks();
+    internal static void LogWarning(object ex) => Logger.LogWarning(ex);
 
-        RoomCameraHooks.RemoveHooks();
-    }
+    internal static void LogError(object ex) => Logger.LogError(ex);
+
+    internal static void LogFatal(object ex) => Logger.LogFatal(ex);
 }

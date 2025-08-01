@@ -1,26 +1,14 @@
-﻿using MRCustom.Extensions;
-
-namespace MRCustom.Hooks;
+﻿namespace MRCustom;
 
 public static class RoomCameraHooks
 {
-    internal static void ApplyHooks()
-    {
-        On.RoomCamera.DrawUpdate += RoomCamera_DrawUpdate;
-    }
-
-    internal static void RemoveHooks()
-    {
-        On.RoomCamera.DrawUpdate -= RoomCamera_DrawUpdate;
-    }
-
     //-- MR7: Taken from "Slugcat Eyebrow Raise" mod.
     // I assume from the comment stolen below however, that this code was written by Henpemaz, so credit to him for this.
     // Although, I have changed it to no longer focus on the player.
 
     // Henpemaz's magic
 
-    private static void RoomCamera_DrawUpdate(On.RoomCamera.orig_DrawUpdate orig, RoomCamera roomCamera, float timeStacker, float timeSpeed)
+    internal static void RoomCamera_DrawUpdate(On.RoomCamera.orig_DrawUpdate orig, RoomCamera roomCamera, float timeStacker, float timeSpeed)
     {
         var zoom = RoomCameraExtension.cameraZoom;
         var offset = RoomCameraExtension.cameraOffset;

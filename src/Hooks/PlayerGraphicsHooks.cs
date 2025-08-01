@@ -1,22 +1,8 @@
-﻿using MRCustom.Animations;
-
-namespace MRCustom.Hooks;
+﻿namespace MRCustom;
 
 public static class PlayerGraphicsHooks
 {
-    // Add hooks
-    internal static void ApplyHooks()
-    {
-        On.PlayerGraphics.Update += PlayerGraphics_Update;
-    }
-
-    // Remove hooks
-    internal static void RemoveHooks()
-    {
-        On.PlayerGraphics.Update -= PlayerGraphics_Update;
-    }
-
-    private static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
+    internal static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {
         orig(self);
 

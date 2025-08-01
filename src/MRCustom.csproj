@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="..\lib\BepInEx.dll">
       <Private>False</Private>
     </Reference>
@@ -57,6 +61,9 @@
       <HintPath>..\lib\PUBLIC-Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http">
       <Private>False</Private>
     </Reference>
@@ -92,28 +99,30 @@
     </Reference>
   </ItemGroup>
 
+<Target Name="GenerateMod" AfterTargets="PostBuildEvent">
+  <!-- Delete old plugin DLLs -->
   <ItemGroup>
-    <Folder Include="Player\" />
-    <Folder Include="RoomCamera\" />
+    <RemovePlugins Include="../marcustom/plugins/*.dll" />
   </ItemGroup>
+  <Delete Files="@(RemovePlugins)" />
 
-	<Target Name="GenerateMod" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<RemovePlugins Include="../marcustom/plugins/*.dll" />
-		</ItemGroup>
-		<ItemGroup>
-			<CopyPlugins Include="$(TargetPath)" />
-		</ItemGroup>
-		<Delete Files="@(RemovePlugins)" />
-		<Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../marcustom/plugins/" />
-	</Target>
+  <!-- Copy main mod DLL to plugins -->
+  <Copy SourceFiles="$(TargetPath)" DestinationFolder="../marcustom/plugins/" />
+
+  <!-- Copy dependencies (e.g., System.Text.Json) to libs -->
+  <ItemGroup>
+    <LibFiles Include="$(OutputPath)Newtonsoft.Json.dll" />
+    <!-- Add other dependencies here -->
+  </ItemGroup>
+  <Copy SourceFiles="@(LibFiles)" DestinationFolder="../marcustom/libs/" SkipUnchangedFiles="true" />
+</Target>
 
 	<!-- Custom Copy to slugcrafting\lib, compartmentalizedcreaturegraphics\lib, and designmyslugcat\lib on Debug build -->
-    <!--<Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">-->
-	<!--    <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />-->
-	<!--    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />-->
-	<!--	<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />-->
-	<!--	<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />-->
-    <!--</Target>-->
+    <Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">
+    <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />
+	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />
+	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />
+    </Target>
 
 </Project>

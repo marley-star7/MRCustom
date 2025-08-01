@@ -1,4 +1,4 @@
-﻿namespace MRCustom;
+﻿namespace MRCustom.Physics;
 
 /// <summary>
 /// A class for doing the calculations in making easy strings and cords and such visuals.

@@ -5,6 +5,9 @@ global using System.Linq;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.Serialization.Formatters.Binary;
 
+global using Newtonsoft.Json;
+global using Newtonsoft.Json.Linq;
+
 global using UnityEngine;
 
 global using BepInEx;
@@ -20,6 +23,11 @@ global using MoreSlugcats;
 global using Watcher;
 
 global using MRCustom.Math;
+global using MRCustom.Physics;
+global using MRCustom.Json;
+global using MRCustom.Animations;
+global using MRCustom.Extensions;
+global using MRCustom.Contexts;
 
 global using Color = UnityEngine.Color;
 global using Vector2 = UnityEngine.Vector2;

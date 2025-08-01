@@ -1,6 +1,6 @@
 ﻿namespace MRCustom.Extensions;
 
-public static class CreatureExtension
+public static class CreatureExtensions
 {
     /// <summary>
     /// Removes the grabbed object from the creature's grasp and the room.

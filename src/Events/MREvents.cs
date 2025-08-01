@@ -1,4 +1,4 @@
-﻿namespace MRCustom;
+﻿namespace MRCustom.Events;
 
 public static partial class MREvents
 {
