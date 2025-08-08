@@ -1,6 +1,6 @@
 ﻿namespace MRCustom;
 
-public static class PlayerGraphicsHooks
+internal static class PlayerGraphicsHooks
 {
     internal static void PlayerGraphics_Update(On.PlayerGraphics.orig_Update orig, PlayerGraphics self)
     {

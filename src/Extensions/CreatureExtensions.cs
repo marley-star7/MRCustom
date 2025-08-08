@@ -1,7 +1,16 @@
 ﻿namespace MRCustom.Extensions;
 
-public static class CreatureExtensions
+public static class MarCreatureExtensions
 {
+    /// <summary>
+    /// Uses source's method of calculating stun from damage, useful for causing a stun same amount as damage without dealing the damage.
+    /// </summary>
+    /// <param name="damage"></param>
+    public static float ConvertDamageToStunBonus(float damage)
+    {
+        return damage * 30f;
+    }
+
     /// <summary>
     /// Removes the grabbed object from the creature's grasp and the room.
     /// </summary>

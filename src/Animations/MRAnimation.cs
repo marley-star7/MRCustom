@@ -2,29 +2,54 @@
 
 public abstract class MRAnimation<T> where T : PhysicalObject
 {
-    /*
-    public enum LoopModeEnum
-    {
-        None,
-        Linear,
-        PingPong
-    }
-    public LoopModeEnum LoopMode;
-    */
+    public delegate void AnimationEventDelegate<T>(T player) where T : PhysicalObject;
 
-    protected T owner;
-    public float Length;
+    /// <summary>
+    /// Built in signal events that always plays on animation start.
+    /// </summary>
+    public StringName animationStartedSignalEvent = new StringName("AnimationStarted");
+    /// <summary>
+    /// Built in signal events that always plays on animation finish.
+    /// </summary>
+    public StringName animationFinishedSignalEvent = new StringName("AnimationFinished");
+
+    public struct TimeEvent<T2> where T2 : PhysicalObject
+    {
+        public float time;
+        public AnimationEventDelegate<T2> method;
+
+        public TimeEvent(float time, AnimationEventDelegate<T2> method)
+        {
+            this.time = time;
+            this.method = method;
+        }
+    }
+
+    /// <summary>
+    /// Events which play at a specific time.
+    /// </summary>
+    public TimeEvent<T>[] timeEvents = new TimeEvent<T>[0];
+    /// <summary>
+    /// Events which play on the output of a specific signal by the animation.
+    /// </summary>
+    public Dictionary<StringName, List<AnimationEventDelegate<T>>> signalEvents = new();
+
+    public float length;
+
+    public bool loop = true;
+
+    public MRAnimation()
+    {
+
+    }
 
     /// <summary>
     /// Start the animation.
     /// </summary>
     /// <param name="owner"></param>
-    public virtual void Start(T owner)
-    {
-        this.owner = owner;
-    }
+    public abstract void Start(T owner);
     /// <summary>
-    /// Stops the animation.
+    /// Stop the animation.
     /// </summary>
     /// <param name="owner"></param>
     public abstract void Stop(T owner);
@@ -32,10 +57,33 @@ public abstract class MRAnimation<T> where T : PhysicalObject
     /// Ran on normal update.
     /// </summary>
     /// <param name="animationTime"></param>
-    public abstract void Update(int animationTimer);
+    public abstract void Update(T owner, float animationTimer);
     /// <summary>
     /// Ran on graphics update.
     /// </summary>
     /// <param name="animationTime"></param>
-    public abstract void GraphicsUpdate(int animationTimer);
+    public abstract void GraphicsUpdate(T owner, float animationTimer);
+
+    public void EmitSignal(StringName signal, T owner)
+    {
+        if (signalEvents.ContainsKey(signal))
+        {
+            var thisSignalsEvents = signalEvents[signal];
+
+            for (int i = 0; i < thisSignalsEvents.Count; i++)
+            {
+                thisSignalsEvents[i].Invoke(owner);
+            }
+        }
+    }
+
+    public void AddSignalEvent(StringName signal, AnimationEventDelegate<T> handler)
+    {
+        if (!signalEvents.TryGetValue(signal, out var handlers))
+        {
+            handlers = new List<AnimationEventDelegate<T>>();
+            signalEvents[signal] = handlers;
+        }
+        handlers.Add(handler);
+    }
 }

@@ -2,8 +2,36 @@
 
 namespace MRCustom.Extensions;
 
-public static class PlayerExtensions
+public class MarPlayerData
 {
+    public struct RunSpeedLinearModifier
+    {
+        public float value;
+        public RunSpeedLinearModifier(float value)
+        { 
+            this.value = value; 
+        }
+    }
+
+    /// <summary>
+    /// Percentages that are added up before multiplied to the current base run speed value.
+    /// </summary>
+    public StatModifierByteId<RunSpeedLinearModifier> runSpeedLinearModifiers;
+
+    public WeakReference<Player> playerRef;
+
+    public MarPlayerData(Player player)
+    {
+        playerRef = new WeakReference<Player>(player);
+    }
+}
+
+public static class MarPlayerExtensions
+{
+    private static readonly ConditionalWeakTable<Player, MarPlayerData> craftingDataConditionalWeakTable = new();
+
+    public static MarPlayerData GetPlayerMarData(this Player player) => craftingDataConditionalWeakTable.GetValue(player, _ => new MarPlayerData(player));
+
     /// <summary>
     /// Switch the items in the player's hands.
     /// Stolen from source.
@@ -37,6 +65,32 @@ public static class PlayerExtensions
                 player.switchHandsProcess = 0f;
             }
         }
+    }
+
+    /// <summary>
+    /// Realizes an abstractPhysicalObject into the room and grabs it.
+    /// </summary>
+    /// <param name="self"></param>
+    /// <param name="abstractPhysicalObject"></param>
+    public static void RealizeAndGrab(this Player self, AbstractPhysicalObject abstractPhysicalObject)
+    {
+        if (abstractPhysicalObject.realizedObject == null)
+            abstractPhysicalObject.RealizeInRoom();
+
+        self.SlugcatGrab(abstractPhysicalObject.realizedObject, self.FreeHand());
+    }
+
+    /// <summary>
+    /// Copied from source code for how the player ends a roll.
+    /// </summary>
+    /// <param name="self"></param>
+    public static void EndRoll(this Player self)
+    {
+        self.rollCounter = 0;
+        self.rollDirection = 0;
+        self.room.PlaySound(SoundID.Slugcat_Roll_Finish, self.mainBodyChunk, loop: false, 1f, 1f);
+        self.animation = Player.AnimationIndex.None;
+        self.standing = self.input[0].y > -1;
     }
 
     /// <summary>

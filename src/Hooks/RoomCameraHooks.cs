@@ -1,8 +1,8 @@
 ﻿namespace MRCustom;
 
-public static class RoomCameraHooks
+internal static class RoomCameraHooks
 {
-    //-- MR7: Taken from "Slugcat Eyebrow Raise" mod.
+    //-- MS7: Taken from "Slugcat Eyebrow Raise" mod.
     // I assume from the comment stolen below however, that this code was written by Henpemaz, so credit to him for this.
     // Although, I have changed it to no longer focus on the player.
 
@@ -10,8 +10,8 @@ public static class RoomCameraHooks
 
     internal static void RoomCamera_DrawUpdate(On.RoomCamera.orig_DrawUpdate orig, RoomCamera roomCamera, float timeStacker, float timeSpeed)
     {
-        var zoom = RoomCameraExtension.cameraZoom;
-        var offset = RoomCameraExtension.cameraOffset;
+        var zoom = MarRoomCameraExtensions.cameraZoom;
+        var offset = MarRoomCameraExtensions.cameraOffset;
 
         #region Follow & Zoom
 

@@ -107,7 +107,7 @@ public class MRLinePhysics
     }
 
     /// <summary>
-    ///-MR7: Basically stolen from source, mostly from FlyLure.
+    ///-MS7: Basically stolen from source, mostly from FlyLure.
     /// </summary>
     /// <param name="i"></param>
     private void ConnectSegment(int i)
@@ -156,7 +156,7 @@ public class MRLinePhysics
 
         for (int i = 0; i < parts.Length; i++)
         {
-            //-- MR7 Most of the time, we will be using the direction of the previous PREVIOUS parts,
+            //-- MS7 Most of the time, we will be using the direction of the previous PREVIOUS parts,
             // But to make sure the last parts doesn't not settle at all very fast and look weird, we just use the previous.
             Vector2 currentStalkDirToDecidingStalk;
             if (i > 1)
@@ -175,7 +175,7 @@ public class MRLinePhysics
                 currentStalkDirToDecidingStalk = Custom.DirVec(parts[i].pos, parts[i].pos + Vector2.up * restSpeed);
             }
 
-            //-- MR7: TODO: figure out the magic number 4.5f, in base FlyLure code, it seems to be a multiplier for the stalks.
+            //-- MS7: TODO: figure out the magic number 4.5f, in base FlyLure code, it seems to be a multiplier for the stalks.
             // Set it here to be based off parts part length, to be to be similar to the parts length, but not sure if limiting customization?
             parts[i].vel -= currentStalkDirToDecidingStalk * (partLength);
         }

@@ -1,6 +1,6 @@
 ﻿namespace MRCustom;
 
-public static class RainWorldGameHooks
+internal static class RainWorldGameHooks
 {
     internal static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame rainWorldGame, ProcessManager manager)
     {

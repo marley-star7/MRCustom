@@ -1,6 +1,6 @@
 ﻿namespace MRCustom.Extensions;
 
-public static class RoomCameraExtensions
+public static class MarRoomCameraExtensions
 {
     public static float cameraZoom = 1f;
     public static Vector2 cameraOffset = Vector2.zero;

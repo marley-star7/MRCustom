@@ -1,8 +1,8 @@
 ﻿namespace MRCustom.Extensions;
 
-public static class ColorExtensions
+public static class MarColorExtensions
 {
-    public static bool TryParse(this Color thisColor, string colorString, out Color color)
+    public static bool TryParse(string colorString, out Color color)
     {
         color = Color.white; // Default value
 

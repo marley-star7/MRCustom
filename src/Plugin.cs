@@ -1,4 +1,6 @@
-﻿using MRCustom.Events;
+﻿// TODO: figure out a way to do signal events.
+
+using MRCustom.Events;
 
 namespace MRCustom;
 

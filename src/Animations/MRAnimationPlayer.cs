@@ -1,114 +1,226 @@
 ﻿namespace MRCustom.Animations;
 
-public class MRAnimationPlayer<T> where T : PhysicalObject
+/// <summary>
+/// Handles playback of animations for a PhysicalObject owner, managing animation states,
+/// events, and transitions. Works with an AnimationLibrary for animation storage.
+/// </summary>
+/// <typeparam name="AnimationLibraryType">ExtEnum type used as animation identifiers</typeparam>
+/// <typeparam name="ownerType">Type of the object owning these animations</typeparam>
+public class MRAnimationPlayer<AnimationLibraryType, ownerType>
+    where AnimationLibraryType : ExtEnum<AnimationLibraryType>
+    where ownerType : PhysicalObject
 {
-    public MRAnimation<T>? currentAnimation = null;
+    // --- Fields ---
+    private AnimationLibraryType? _currentAnimationIndex;
+    private MRAnimation<ownerType>? _currentAnimation;
+    private int _waitingForAnimationEventIndex;
+    private float _animationTimer;
+    private int _timesLoopedCurrentAnimation;
+    private bool _isPlaying;
 
-    public int animationTimer = 0;
-    public bool isPlaying = false;
+    // --- Properties ---
+    public readonly AnimationLibrary<AnimationLibraryType, ownerType> animationLibrary;
+    public WeakReference<ownerType> ownerRef { get; private set; }
 
-    public WeakReference<T> ownerRef;
-
-    public MRAnimationPlayer(T owner)
+    public float animationTimer
     {
-        this.ownerRef = new WeakReference<T>(owner);
+        get => _animationTimer;
     }
 
-    // Just for ease of use refrencing.
-    public T owner{
-        get {
-            if (ownerRef.TryGetTarget(out T owner))
-                return owner;
-            else
-                return null;
-        }
+    public int timesLoopedCurrentAnimation
+    {
+        get => _timesLoopedCurrentAnimation;
     }
 
-    /// <summary>
-    /// Play the animation if paused,
-    /// Start it for the first time if it is a new animation.
-    /// </summary>
-    /// <param name="animation"></param>
-    public void Play(MRAnimation<T> animation)
+    public bool isPlaying
     {
-        isPlaying = true;
-
-        // If this is a new animation, start it from the beginning.
-        if (currentAnimation != animation)
-            Start(animation);
-    }
-
-    private void Start(MRAnimation<T> animation)
-    {
-        animationTimer = 0;
-        currentAnimation = animation;
-
-        currentAnimation.Start(owner);
-    }
-
-    public void Pause()
-    {
-        isPlaying = false;
+        get => _isPlaying;
     }
 
     /// <summary>
-    /// Stop only if current animation is same as requested to stop.
+    /// The currently playing animation's index in the library
     /// </summary>
-    /// <param name="animation"></param>
-    public void Stop(MRAnimation<T> animation)
+    public AnimationLibraryType CurrentAnimationIndex => _currentAnimationIndex;
+
+    /// <summary>
+    /// Reference to the currently playing animation
+    /// </summary>
+    public MRAnimation<ownerType> CurrentAnimation => _currentAnimation;
+
+    /// <summary>
+    /// The owner object of this animation player
+    /// </summary>
+    public ownerType owner => ownerRef.TryGetTarget(out ownerType owner) ? owner : null;
+
+    /// <summary>
+    /// Whether any animation is currently playing
+    /// </summary>
+    public bool IsPlaying => _isPlaying;
+
+    // --- Events ---
+    /// <summary>
+    /// Called when an animation completes a loop
+    /// </summary>
+    public event Action<AnimationLibraryType, int> AnimationLooped;
+
+    /// <summary>
+    /// Called when an animation finishes completely (won't fire for looping animations)
+    /// </summary>
+    public event Action<AnimationLibraryType, int> AnimationFinished;
+
+    // --- Constructor ---
+    public MRAnimationPlayer(AnimationLibrary<AnimationLibraryType, ownerType> animationLibrary, ownerType owner)
     {
-        if (currentAnimation == animation)
+        this.animationLibrary = animationLibrary;
+        this.ownerRef = new WeakReference<ownerType>(owner);
+    }
+
+    // --- Public Methods ---
+    /// <summary>
+    /// Starts or resumes playback of an animation by its index
+    /// </summary>
+    public void Play(AnimationLibraryType animationIndex)
+    {
+        _isPlaying = true;
+        if (_currentAnimationIndex != animationIndex)
         {
-            currentAnimation.Stop(owner);
-            currentAnimation = null;
-
-            isPlaying = false;
-            animationTimer = 0;
+            Start(animationIndex);
+            _timesLoopedCurrentAnimation = 0;
         }
     }
 
+    /// <summary>
+    /// Pauses the current animation
+    /// </summary>
+    public void Pause() => _isPlaying = false;
 
+    /// <summary>
+    /// Stops playback if the current animation matches the specified index
+    /// </summary>
+    public void Stop(AnimationLibraryType animationIndex)
+    {
+        if (animationIndex.Equals(_currentAnimationIndex))
+        {
+            Stop();
+        }
+    }
+
+    /// <summary>
+    /// Stops the current animation and resets playback state
+    /// </summary>
     public void Stop()
     {
-        currentAnimation.Stop(owner);
-        currentAnimation = null;
+#if DEBUG
+        Plugin.LogDebug($"Current animation of: {_currentAnimationIndex.ToString()} stopped.");
+#endif
 
-        isPlaying = false;
-        animationTimer = 0;
+        _currentAnimation?.Stop(owner);
+        ResetAnimationStateFull();
     }
 
-    public Action<MRAnimation<T>?> AnimationFinished;
+    // --- Private Methods ---
+    private void Start(AnimationLibraryType animationIndex)
+    {
+        _currentAnimationIndex = animationIndex;
+        _currentAnimation = animationLibrary.GetAnimation(animationIndex);
+        _currentAnimation.EmitSignal(_currentAnimation.animationStartedSignalEvent, owner);
+        ResetAnimationStateBetweenLoops();
 
+        _currentAnimation.Start(owner);
+    }
+
+    /// <summary>
+    /// Updates the animation state and processes animation events
+    /// </summary>
     public void Update()
     {
-        if (!isPlaying || currentAnimation == null)
+        if (!_isPlaying || _currentAnimation == null)
             return;
 
-        animationTimer++;
+        _animationTimer++;
 
-        currentAnimation.Update(animationTimer);
-
-        if (animationTimer > currentAnimation.Length)
-            FinishAnimation();
+        _currentAnimation.Update(owner, _animationTimer);
+        ProcessAnimationEvents();
+        CheckAnimationCompletion();
     }
 
-    // TODO: find out how to do delta junk or whatever for the proper animationTimer++ timing when updating, idk what rain world uses.
+    /// <summary>
+    /// Handles rendering updates for the current animation
+    /// </summary>
     public void GraphicsUpdate()
     {
-        if (!isPlaying || currentAnimation == null)
+        if (_isPlaying && _currentAnimation != null)
+        {
+            _currentAnimation.GraphicsUpdate(owner, _animationTimer);
+        }
+    }
+
+    private void ProcessAnimationEvents()
+    {
+        if (_currentAnimation.timeEvents.Length == 0)
             return;
 
-        currentAnimation.GraphicsUpdate(animationTimer);
+        var nextEvent = _currentAnimation.timeEvents[_waitingForAnimationEventIndex];
+        if (nextEvent.time <= _animationTimer)
+        {
+            nextEvent.method(owner);
+            ContinueToNextAnimationEvent();
+        }
+    }
 
-        // I do this in both because, playing is safe :[ 
-        if (animationTimer > currentAnimation.Length)
-            FinishAnimation();
+    private void CheckAnimationCompletion()
+    {
+        if (_animationTimer > _currentAnimation.length)
+        {
+            if (_currentAnimation.loop)
+            {
+                LoopAnimation();
+            }
+            else
+            {
+                FinishAnimation();
+            }
+        }
+    }
+
+    private void ContinueToNextAnimationEvent()
+    {
+        _waitingForAnimationEventIndex++;
+    }
+
+    private void LoopAnimation()
+    {
+        var timesLoop = _timesLoopedCurrentAnimation++;
+        Start(_currentAnimationIndex);
+
+        _currentAnimation?.EmitSignal(_currentAnimation.animationFinishedSignalEvent, owner);
+        AnimationLooped?.Invoke(_currentAnimationIndex, _timesLoopedCurrentAnimation);
     }
 
     private void FinishAnimation()
     {
-        var finishedAnim = currentAnimation;
+        var finishedAnim = _currentAnimation;
+        var finishedAnimIndex = _currentAnimationIndex;
+        var timesLooped = _timesLoopedCurrentAnimation;
         Stop();
-        AnimationFinished?.Invoke(finishedAnim);
+
+        finishedAnim?.EmitSignal(finishedAnim.animationFinishedSignalEvent, owner);
+        AnimationFinished?.Invoke(finishedAnimIndex, timesLooped);
+    }
+
+    private void ResetAnimationStateBetweenLoops()
+    {
+        _waitingForAnimationEventIndex = 0;
+        _animationTimer = 0;
+    }
+
+    private void ResetAnimationStateFull()
+    {
+        ResetAnimationStateBetweenLoops();
+
+        _currentAnimationIndex = null;
+        _currentAnimation = null;
+        _isPlaying = false;
+        _timesLoopedCurrentAnimation = 0;
     }
 }
