@@ -1,3 +1,4 @@
+using MRCustom.Extensions.Creatures;
 using SlugBase;
 
 namespace MRCustom;

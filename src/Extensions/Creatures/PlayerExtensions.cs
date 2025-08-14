@@ -1,6 +1,6 @@
 ﻿using static Player;
 
-namespace MRCustom.Extensions;
+namespace MRCustom.Extensions.Creatures;
 
 public class MarPlayerData
 {
@@ -16,7 +16,7 @@ public class MarPlayerData
     /// <summary>
     /// Percentages that are added up before multiplied to the current base run speed value.
     /// </summary>
-    public StatModifierByteId<RunSpeedLinearModifier> runSpeedLinearModifiers;
+    public StatModifierByteId<RunSpeedLinearModifier> runSpeedLinearModifiers = new StatModifierByteId<RunSpeedLinearModifier>();
 
     public WeakReference<Player> playerRef;
 
@@ -89,7 +89,7 @@ public static class MarPlayerExtensions
         self.rollCounter = 0;
         self.rollDirection = 0;
         self.room.PlaySound(SoundID.Slugcat_Roll_Finish, self.mainBodyChunk, loop: false, 1f, 1f);
-        self.animation = Player.AnimationIndex.None;
+        self.animation = AnimationIndex.None;
         self.standing = self.input[0].y > -1;
     }
 

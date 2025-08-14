@@ -1,4 +1,4 @@
-﻿namespace MRCustom.Extensions;
+﻿namespace MRCustom.Extensions.Creatures;
 
 public static class MarCreatureExtensions
 {
