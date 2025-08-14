@@ -1,4 +1,5 @@
-﻿namespace MRCustom.Physics;
+﻿/*
+namespace MRCustom.Physics;
 
 public abstract class RotationStrategy
 {
@@ -13,3 +14,4 @@ public abstract class RotationStrategy
 
     public abstract void DrawSpritesUpdate(float timeStacker);
 }
+*/

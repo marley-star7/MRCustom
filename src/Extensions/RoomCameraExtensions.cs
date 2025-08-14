@@ -2,6 +2,8 @@
 
 public static class MarRoomCameraExtensions
 {
+    // TODO: Get the camera zooms working!
+
     public static float cameraZoom = 1f;
     public static Vector2 cameraOffset = Vector2.zero;
 

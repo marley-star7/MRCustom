@@ -111,4 +111,13 @@ public static class MarPlayerExtensions
 
         return player.abstractCreature.world.game.manager.fallbackThreatDetermination.currentMusicAgnosticThreat;
     }
+
+    /// <summary>
+    /// Returns the secondary hand grasp index if sent the primary, and primary hand index if sent the secondary
+    /// Defaults to 0,
+    /// </summary>
+    /// <param name="graspIndex"></param>
+    /// <returns></returns>
+    public static int GetOtherGrasp(int graspIndex) =>
+        graspIndex == 0 ? 1 : 0;
 }
