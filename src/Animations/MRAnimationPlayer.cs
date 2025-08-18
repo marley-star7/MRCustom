@@ -121,6 +121,12 @@ public class MRAnimationPlayer<AnimationLibraryType, ownerType>
     // --- Private Methods ---
     private void Start(AnimationLibraryType animationIndex)
     {
+        if (!animationLibrary.ContainsAnimation(animationIndex))
+        {
+            Plugin.LogWarning($"No Animation registered in animation library for animation of index: {animationIndex}, cannot start animation!");
+            return;
+        }
+
         _currentAnimationIndex = animationIndex;
         _currentAnimation = animationLibrary.GetAnimation(animationIndex);
         _currentAnimation.EmitSignal(_currentAnimation.animationStartedSignalEvent, owner);

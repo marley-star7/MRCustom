@@ -91,7 +91,14 @@ sealed class Plugin : BaseUnityPlugin
 
     internal static void LogMessage(object ex) => Logger.LogMessage(ex);
 
-    internal static void LogDebug(object ex) => Logger.LogDebug(ex);
+    // -- Ms7: String prints are expensive!
+    // So just incase we forget any #if's anywhere to encase debug logs to be for debug builds only to reduce hit on user performance.
+    internal static void LogDebug(object ex)
+    {
+#if DEBUG
+        Logger.LogDebug(ex);
+#endif
+    }
 
     internal static void LogWarning(object ex) => Logger.LogWarning(ex);
 

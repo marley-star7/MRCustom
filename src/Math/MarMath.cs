@@ -15,4 +15,14 @@ public static class MarMath
             s = 1;
         return s;
     }
+
+    /// <summary>
+    /// Returns 'value' with the same sign as 'sign' (magnitude of 'value' remains unchanged).
+    /// If 'value' is zero, returns 0 regardless of sign.
+    /// </summary>
+    public static int MatchSign(int value, int sign)
+    {
+        if (value == 0) return 0;  // Preserve zero
+        return System.Math.Abs(value) * System.Math.Sign(sign);
+    }
 }
