@@ -29,7 +29,7 @@ public static class ObjectIconSymbolPropertiesManager
         else
         {
             // Return a default or error object UI properties if not found
-            return new ObjectIconSymbolProperties("Unknown", "MarError64", Color.red, 1f);
+            return new ObjectIconSymbolProperties("Unknown", "marError64", Color.red, 1f);
         }
     }
 }
