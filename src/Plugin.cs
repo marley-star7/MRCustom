@@ -49,6 +49,7 @@ sealed class Plugin : BaseUnityPlugin
             MREvents.ApplyEvents();
         }
 
+        Futile.atlasManager.LoadAtlas("atlases/marError32");
         Futile.atlasManager.LoadAtlas("atlases/marError64");
         Futile.atlasManager.LoadAtlas("atlases/marNothing");
     }
@@ -95,7 +96,8 @@ sealed class Plugin : BaseUnityPlugin
         // TODO: then for base game objects that you can't add to, make an interface for the properties class that fisob uses, to inherit with your fisob properties, and then can make a new properties thing too.
         // TODO: maybe name them object statistics, and they use => to refer to the properties of the object, such as armor, damage, etc.
 
-
+        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Rock, new ObjectIconSymbolProperties("Rock", "Symbol_Rock", Color.gray, 1f));
+        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Spear, new ObjectIconSymbolProperties("Spear", "Symbol_Spear", Color.gray, 1f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Mushroom, new ObjectIconSymbolProperties("Mushroom", "Symbol_Mushroom", Custom.hexToColor("ECECEC"), 1f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.KarmaFlower, new ObjectIconSymbolProperties("Karma Flower", "smallKarma9-9", Custom.hexToColor("bba557"), 0.5f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SlimeMold, new ObjectIconSymbolProperties("Slime Mold", "Symbol_SlimeMold", Custom.hexToColor("ff9900"), 1f));
@@ -104,6 +106,7 @@ sealed class Plugin : BaseUnityPlugin
         //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.LillyPuck, new ObjectIconSymbolProperties("LillyPuck", "Symbol_LillyPuck", new Color(0.17058827f, 0.9619608f, 0.9986275f), 1f));
         //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GlowWeed, new ObjectIconSymbolProperties("GlowWeed", "Symbol_GlowWeed", new Color(0.94705886f, 1f, 0.26862746f), 1f));
         //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Seed, new ObjectIconSymbolProperties("Seed", "Symbol_Seed", Custom.hexToColor("fffcb8"), 1f));
+        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.WaterNut, new ObjectIconSymbolProperties("Bubble Fruit", "Symbol_WaterNut", Color.blue, 1f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.JellyFish, new ObjectIconSymbolProperties("Jellyfish", "Symbol_JellyFish", Color.grey, 1f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FirecrackerPlant, new ObjectIconSymbolProperties("Cherrybomb", "Symbol_Firecracker", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
         ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, new ObjectIconSymbolProperties("Grenade", "Symbol_StunBomb", new Color(0.9019608f, 0.05490196f, 0.05490196f), 1f));
