@@ -1,13 +1,17 @@
 ﻿namespace MRCustom.UI;
 
+/// <summary>
+/// A scroll button element similar to the ones used in the LevelSelector in Arena.
+/// </summary>
 public class ScrollButton : SymbolButton
 {
+    //-- Ms7: The values here are important, it is part of the math for rotating.
     public enum Direction
     {
         Up = 0,
-        Down = 1,
-        Left = 2,
-        Right = 3,
+        Right = 1,
+        Down = 2,
+        Left = 3,
     }
 
     public Direction direction;
@@ -22,6 +26,7 @@ public class ScrollButton : SymbolButton
     public override void Update()
     {
         base.Update();
+
         if (this.buttonBehav.clicked && !this.buttonBehav.greyedOut)
         {
             this.heldCounter++;
@@ -42,7 +47,7 @@ public class ScrollButton : SymbolButton
     public override void GrafUpdate(float timeStacker)
     {
         base.GrafUpdate(timeStacker);
-        this.symbolSprite.rotation = 90f * (float)this.direction;
+        this.symbolSprite.rotation = 90f * (float)direction;
     }
 
     public override void Clicked()

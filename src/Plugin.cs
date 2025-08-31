@@ -38,6 +38,8 @@ sealed class Plugin : BaseUnityPlugin
         On.RainWorld.PostModsInit += RainWorld_PostModsInit;
         RegisterObjectIconSymbolProperties();
 
+        Enums.SoundID.Initialize();
+
         Logger.LogInfo("MRCustom is loaded!");
     }
 
