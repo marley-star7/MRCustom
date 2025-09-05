@@ -6,7 +6,7 @@
 /// <remarks>This structure is used to define an object, such as a physical object or a creature, by
 /// specifying its  <see cref="AbstractPhysicalObject.AbstractObjectType"/> and, if applicable, its <see
 /// cref="CreatureTemplate.Type"/>.</remarks>
-public readonly struct ObjectDefinition
+public readonly struct EntityTypeDefinition
 {
     /// <summary>
     /// The AbstractObjectType of the ingredient.
@@ -18,34 +18,36 @@ public readonly struct ObjectDefinition
     /// </summary>
     public readonly CreatureTemplate.Type? creatureType;
 
-    public ObjectDefinition(AbstractPhysicalObject.AbstractObjectType objectType, CreatureTemplate.Type? creatureType = null)
+    public EntityTypeDefinition(AbstractPhysicalObject.AbstractObjectType objectType, CreatureTemplate.Type? creatureType = null)
     {
         this.objectType = objectType;
         this.creatureType = creatureType;
     }
 
     /// <summary>
-    /// Automatically creates an ObjectDefinition for an AbstractPhysicalObject's information.
+    /// Automatically creates an EntityTypeDefinition for an AbstractPhysicalObject's information.
     /// </summary>
     /// <param name="abstractPhysicalObject"></param>
-    public ObjectDefinition(AbstractPhysicalObject abstractPhysicalObject)
+    public EntityTypeDefinition(AbstractPhysicalObject abstractPhysicalObject)
     {
         this.objectType = abstractPhysicalObject.type;
         if (abstractPhysicalObject is AbstractCreature abstractCreature)
             this.creatureType = abstractCreature.creatureTemplate.type;
+        else
+            this.creatureType = null;
     }
 
-    //-- Ms7: Operator overloading for increased performance when comparing ObjectDefinitions,
+    //-- Ms7: Operator overloading for increased performance when comparing EntityTypeDefinitions,
     // since we do not need to check if creatureType is the same when objectType is not Creature.
 
     /// <summary>
-    /// Compares two ObjectDefinition instances for equality.
+    /// Compares two EntityTypeDefinition instances for equality.
     /// </summary>
     /// <remarks>
     /// If both object types are Creature, compares creature types as well.
     /// For non-creature object types, only the object type is compared.
     /// </remarks>
-    public static bool operator ==(ObjectDefinition left, ObjectDefinition right)
+    public static bool operator ==(EntityTypeDefinition left, EntityTypeDefinition right)
     {
         // If object types don't match, they're not equal
         if (left.objectType != right.objectType)
@@ -62,23 +64,23 @@ public readonly struct ObjectDefinition
     }
 
     /// <summary>
-    /// Compares two ObjectDefinition instances for inequality.
+    /// Compares two EntityTypeDefinition instances for inequality.
     /// </summary>
-    public static bool operator !=(ObjectDefinition left, ObjectDefinition right)
+    public static bool operator !=(EntityTypeDefinition left, EntityTypeDefinition right)
     {
         return !(left == right);
     }
 
     /// <summary>
-    /// Determines whether the specified object is equal to the current ObjectDefinition.
+    /// Determines whether the specified object is equal to the current EntityTypeDefinition.
     /// </summary>
     public override bool Equals(object obj)
     {
-        return obj is ObjectDefinition other && this == other;
+        return obj is EntityTypeDefinition other && this == other;
     }
 
     /// <summary>
-    /// Returns the hash code for this ObjectDefinition.
+    /// Returns the hash code for this EntityTypeDefinition.
     /// </summary>
     public override int GetHashCode()
     {

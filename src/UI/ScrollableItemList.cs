@@ -30,20 +30,25 @@ public abstract class ScrollableItemList<ItemType> : ScrollableContainer where I
 
             float transparency = 1f;
             var ownerFloatScrollPos = owner.scrollableBehav.floatScrollPos;
+            var fadeInterpolation = 1f; // Default is 1, this is to gurantee if this is not changed by below, the item will be full visible as right away as long as it is in the selectable area.
 
-            var thisItemFloatScrollPos = pos.y - owner.size.y / 2f;
+            var thisItemFloatScrollPos = pos.y - (owner.size.y / 2f);
 
-            if (index < ownerFloatScrollPos)
+            if (index < ownerFloatScrollPos) // Item is above the visible area
             {
-                transparency = Mathf.InverseLerp(ownerFloatScrollPos - 1f, ownerFloatScrollPos, thisItemFloatScrollPos);
+                // Fade in as item approaches the top of visible area
+                transparency = Mathf.InverseLerp(ownerFloatScrollPos - 1f, ownerFloatScrollPos, index);
+                fadeInterpolation = Mathf.InverseLerp(-1, 0, -transparency); // Closer to full behind item, closer to immediate transparency change.
             }
-            else if (index > ownerFloatScrollPos + owner.MaxVisibleItems - 1f)
+            else if (index > ownerFloatScrollPos + owner.MaxVisibleItems - 1f) // Item is below the visible area
             {
-                transparency = Mathf.InverseLerp(ownerFloatScrollPos + owner.MaxVisibleItems - 1f, ownerFloatScrollPos + owner.MaxVisibleItems, thisItemFloatScrollPos);
+                // Fade in as item approaches the bottom of visible area
+                // Use index instead of thisItemFloatScrollPos for consistent calculation
+                transparency = Mathf.InverseLerp(ownerFloatScrollPos + owner.MaxVisibleItems, ownerFloatScrollPos + owner.MaxVisibleItems - 1f, index);
+                fadeInterpolation = Mathf.InverseLerp(-1, 0, -transparency);
             }
-            transparency = Mathf.InverseLerp(-1, 0, -transparency); // Swap transparency from 0 to 1 to 1 to 0 calculation
 
-            fade = Custom.LerpAndTick(fade, transparency, 0.08f, 0.1f);
+            fade = Custom.LerpAndTick(fade, transparency, fadeInterpolation, 0.1f);
         }
 
         public override void GrafUpdate(float timeStacker)
@@ -167,7 +172,7 @@ public abstract class ScrollableItemList<ItemType> : ScrollableContainer where I
     {
         var singleItemHeight = GetSingleItemHeight;
 
-        float posY = size.y / 2f - item.size.y / 2f; // Top of list
+        float posY = size.y / 2f - (item.size.y / 2f); // Top of list
         posY -= itemIndex * singleItemHeight;
 
         posY += scrollableBehav.floatScrollPos * singleItemHeight;

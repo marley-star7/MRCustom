@@ -36,7 +36,7 @@ sealed class Plugin : BaseUnityPlugin
 
         On.RainWorld.OnModsInit += Extras.WrapInit(LoadPlugin);
         On.RainWorld.PostModsInit += RainWorld_PostModsInit;
-        RegisterObjectIconSymbolProperties();
+        RegisterEntityIconSymbolProperties();
 
         Enums.SoundID.Initialize();
 
@@ -92,48 +92,48 @@ sealed class Plugin : BaseUnityPlugin
         }
     }
 
-    private void RegisterObjectIconSymbolProperties()
+    private void RegisterEntityIconSymbolProperties()
     {
         // TODO: make interface for fisob properties for every item type to store information about the item, such as properties for armor, properties for bombs, etc.
         // TODO: then for base game objects that you can't add to, make an interface for the properties class that fisob uses, to inherit with your fisob properties, and then can make a new properties thing too.
         // TODO: maybe name them object statistics, and they use => to refer to the properties of the object, such as armor, damage, etc.
 
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Rock, new ObjectIconSymbolProperties("Rock", "Symbol_Rock", Color.gray, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Spear, new ObjectIconSymbolProperties("Spear", "Symbol_Spear", Color.gray, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Mushroom, new ObjectIconSymbolProperties("Mushroom", "Symbol_Mushroom", Custom.hexToColor("ECECEC"), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.KarmaFlower, new ObjectIconSymbolProperties("Karma Flower", "smallKarma9-9", Custom.hexToColor("bba557"), 0.5f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SlimeMold, new ObjectIconSymbolProperties("Slime Mold", "Symbol_SlimeMold", Custom.hexToColor("ff9900"), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SSOracleSwarmer, new ObjectIconSymbolProperties("SSOracleSwarmer", "Symbol_Neuron", Custom.hexToColor("FFFFFF"), 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GooieDuck, new ObjectIconSymbolProperties("GooieDuck", "Symbol_GooieDuck", new Color(0.44705883f, 0.9019608f, 0.76862746f), 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.LillyPuck, new ObjectIconSymbolProperties("LillyPuck", "Symbol_LillyPuck", new Color(0.17058827f, 0.9619608f, 0.9986275f), 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GlowWeed, new ObjectIconSymbolProperties("GlowWeed", "Symbol_GlowWeed", new Color(0.94705886f, 1f, 0.26862746f), 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Seed, new ObjectIconSymbolProperties("Seed", "Symbol_Seed", Custom.hexToColor("fffcb8"), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.WaterNut, new ObjectIconSymbolProperties("Bubble Fruit", "Symbol_WaterNut", Color.blue, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.JellyFish, new ObjectIconSymbolProperties("Jellyfish", "Symbol_JellyFish", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FirecrackerPlant, new ObjectIconSymbolProperties("Cherrybomb", "Symbol_Firecracker", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, new ObjectIconSymbolProperties("Grenade", "Symbol_StunBomb", new Color(0.9019608f, 0.05490196f, 0.05490196f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlareBomb, new ObjectIconSymbolProperties("Flashbang", "Symbol_FlashBomb", Custom.hexToColor("b4a8f6"), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SporePlant, new ObjectIconSymbolProperties("Beehive", "Symbol_SporePlant", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.PuffBall, new ObjectIconSymbolProperties("Spore Plant", "Symbol_PuffBall", Color.grey, 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FireEgg, new ObjectIconSymbolProperties("FireEgg", "Symbol_FireEgg", new Color(1f, 0.47058824f, 0.47058824f), 1f));
-        //ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SingularityBomb, new ObjectIconSymbolProperties("SingularityBomb", "Symbol_Singularity", new Color(0.01961f, 0.6451f, 0.85f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlyLure, new ObjectIconSymbolProperties("FlyLure", "Symbol_FlyLure", new Color(0.6784314f, 0.26666668f, 0.21176471f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.BubbleGrass, new ObjectIconSymbolProperties("BubbleGrass", "Symbol_BubbleGrass", new Color(0.05490196f, 0.69803923f, 0.23529412f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Lantern, new ObjectIconSymbolProperties("Lantern", "Symbol_Lantern", new Color(1f, 0.57254905f, 0.31764707f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.DataPearl, new ObjectIconSymbolProperties("Pearl", "Symbol_Pearl", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.VultureMask, new ObjectIconSymbolProperties("Vulture Mask", "Kill_Vulture", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.NeedleEgg, new ObjectIconSymbolProperties("Noodlefly Egg", "needleEggSymbol", new Color(0.5764706f, 0.16078432f, 0.2509804f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.OverseerCarcass, new ObjectIconSymbolProperties("Overseer Eye", "Kill_Overseer", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.DangleFruit, new ObjectIconSymbolProperties("Dangle Fruit", "Symbol_DangleFruit", new Color(0f, 0f, 1f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Rock, new EntityTypeSymbolProperties("Rock", "Symbol_Rock", Color.gray, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Spear, new EntityTypeSymbolProperties("Spear", "Symbol_Spear", Color.gray, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Mushroom, new EntityTypeSymbolProperties("Mushroom", "Symbol_Mushroom", Custom.hexToColor("ECECEC"), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.KarmaFlower, new EntityTypeSymbolProperties("Karma Flower", "smallKarma9-9", Custom.hexToColor("bba557"), 0.5f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SlimeMold, new EntityTypeSymbolProperties("Slime Mold", "Symbol_SlimeMold", Custom.hexToColor("ff9900"), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SSOracleSwarmer, new EntityTypeSymbolProperties("SSOracleSwarmer", "Symbol_Neuron", Custom.hexToColor("FFFFFF"), 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GooieDuck, new EntityTypeSymbolProperties("GooieDuck", "Symbol_GooieDuck", new Color(0.44705883f, 0.9019608f, 0.76862746f), 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.LillyPuck, new EntityTypeSymbolProperties("LillyPuck", "Symbol_LillyPuck", new Color(0.17058827f, 0.9619608f, 0.9986275f), 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GlowWeed, new EntityTypeSymbolProperties("GlowWeed", "Symbol_GlowWeed", new Color(0.94705886f, 1f, 0.26862746f), 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Seed, new EntityTypeSymbolProperties("Seed", "Symbol_Seed", Custom.hexToColor("fffcb8"), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.WaterNut, new EntityTypeSymbolProperties("Bubble Fruit", "Symbol_WaterNut", Color.blue, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.JellyFish, new EntityTypeSymbolProperties("Jellyfish", "Symbol_JellyFish", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FirecrackerPlant, new EntityTypeSymbolProperties("Cherrybomb", "Symbol_Firecracker", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, new EntityTypeSymbolProperties("Grenade", "Symbol_StunBomb", new Color(0.9019608f, 0.05490196f, 0.05490196f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlareBomb, new EntityTypeSymbolProperties("Flashbang", "Symbol_FlashBomb", Custom.hexToColor("b4a8f6"), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SporePlant, new EntityTypeSymbolProperties("Beehive", "Symbol_SporePlant", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.PuffBall, new EntityTypeSymbolProperties("Spore Plant", "Symbol_PuffBall", Color.grey, 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FireEgg, new EntityTypeSymbolProperties("FireEgg", "Symbol_FireEgg", new Color(1f, 0.47058824f, 0.47058824f), 1f));
+        //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SingularityBomb, new EntityTypeSymbolProperties("SingularityBomb", "Symbol_Singularity", new Color(0.01961f, 0.6451f, 0.85f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlyLure, new EntityTypeSymbolProperties("FlyLure", "Symbol_FlyLure", new Color(0.6784314f, 0.26666668f, 0.21176471f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.BubbleGrass, new EntityTypeSymbolProperties("BubbleGrass", "Symbol_BubbleGrass", new Color(0.05490196f, 0.69803923f, 0.23529412f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Lantern, new EntityTypeSymbolProperties("Lantern", "Symbol_Lantern", new Color(1f, 0.57254905f, 0.31764707f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.DataPearl, new EntityTypeSymbolProperties("Pearl", "Symbol_Pearl", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.VultureMask, new EntityTypeSymbolProperties("Vulture Mask", "Kill_Vulture", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.NeedleEgg, new EntityTypeSymbolProperties("Noodlefly Egg", "needleEggSymbol", new Color(0.5764706f, 0.16078432f, 0.2509804f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.OverseerCarcass, new EntityTypeSymbolProperties("Overseer Eye", "Kill_Overseer", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.DangleFruit, new EntityTypeSymbolProperties("Dangle Fruit", "Symbol_DangleFruit", new Color(0f, 0f, 1f), 1f));
 
         /*
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.TubeWorm, new ObjectIconSymbolProperties("TubeWorm", "Kill_Tubeworm", new Color(0.05f, 0.3f, 0.7f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Snail, new ObjectIconSymbolProperties("Snail", "Kill_Snail", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Fly, new ObjectIconSymbolProperties("Fly", "Kill_Bat", Color.grey, 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SmallNeedleWorm, new ObjectIconSymbolProperties("SmallNeedleWorm", "Kill_SmallNeedleWorm", new Color(1f, 0.59607846f, 0.59607846f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SmallCentipede, new ObjectIconSymbolProperties("SmallCentipede", "Kill_Centipede1", new Color(1f, 0.6f, 0f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.VultureGrub, new ObjectIconSymbolProperties("VultureGrub", "Kill_VultureGrub", new Color(0.83137256f, 0.7921569f, 0.43529412f), 1f));
-        ObjectIconSymbolPropertiesManager.AddObjectIconSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Hazer, new ObjectIconSymbolProperties("Hazer", "Kill_Hazer", new Color(0.21176471f, 0.7921569f, 0.3882353f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.TubeWorm, new EntityTypeSymbolProperties("TubeWorm", "Kill_Tubeworm", new Color(0.05f, 0.3f, 0.7f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Snail, new EntityTypeSymbolProperties("Snail", "Kill_Snail", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Fly, new EntityTypeSymbolProperties("Fly", "Kill_Bat", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SmallNeedleWorm, new EntityTypeSymbolProperties("SmallNeedleWorm", "Kill_SmallNeedleWorm", new Color(1f, 0.59607846f, 0.59607846f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SmallCentipede, new EntityTypeSymbolProperties("SmallCentipede", "Kill_Centipede1", new Color(1f, 0.6f, 0f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.VultureGrub, new EntityTypeSymbolProperties("VultureGrub", "Kill_VultureGrub", new Color(0.83137256f, 0.7921569f, 0.43529412f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Hazer, new EntityTypeSymbolProperties("Hazer", "Kill_Hazer", new Color(0.21176471f, 0.7921569f, 0.3882353f), 1f));
         */
     }
 
