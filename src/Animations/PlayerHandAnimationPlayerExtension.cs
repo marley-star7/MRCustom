@@ -2,7 +2,7 @@
 
 namespace MRCustom.Animations;
 
-public class PlayerHandAnimationPlayer : MRAnimationPlayer<AnimationIndex, Player>
+public class PlayerHandAnimationPlayer : RWAnimationPlayer<AnimationIndex, Player>
 {
     public class AnimationIndex : ExtEnum<AnimationIndex>
     {

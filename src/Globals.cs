@@ -23,11 +23,18 @@ global using MoreSlugcats;
 global using Watcher;
 
 global using MRCustom.Math;
+global using MRCustom.Contexts;
+global using MRCustom.Modules;
+global using MRCustom.Modules.PhysicalObjects;
+global using MRCustom.Modules.PlayerCarryableItems;
+global using MRCustom.Modules.Weapons;
+global using MRCustom.Modules.Creatures;
+global using MRCustom.Effects;
+global using MRCustom.CosmeticSprites;
 global using MRCustom.Physics;
 global using MRCustom.Json;
 global using MRCustom.Animations;
 global using MRCustom.Extensions;
-global using MRCustom.Contexts;
 
 global using Color = UnityEngine.Color;
 global using Vector2 = UnityEngine.Vector2;

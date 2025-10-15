@@ -1,16 +1,33 @@
-﻿namespace MRCustom;
+﻿using Fisobs.Sandbox;
+
+namespace MRCustom;
 
 public static class Enums
 {
+    public static void Init()
+    {
+        RuntimeHelpers.RunClassConstructor(typeof(SoundID).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(PlayerHandAnimations).TypeHandle);
+    }
+
     public static class SoundID
     {
-        public static global::SoundID Clack_Small;
-        public static global::SoundID Clack_Done;
+        public static global::SoundID Clack_Small = new global::SoundID("Clack_Small", true);
+        public static global::SoundID Clack_Done = new global::SoundID("Clack_Done", true);
+    }
 
-        internal static void Initialize()
+    public static class PlayerHandAnimations
+    {
+        public static readonly PlayerHandAnimationPlayer.AnimationIndex KnifeStab = new PlayerHandAnimationPlayer.AnimationIndex("KnifeStab", register: true);
+
+        internal static void RegisterValues()
         {
-            Clack_Small = new global::SoundID("Clack_Small", true);
-            Clack_Done = new global::SoundID("Clack_Done", true);
+            PlayerHandAnimationPlayer.defaultPlayerHandAnimationLibrary.RegisterAnimation(KnifeStab,
+                new WeaponStabPlayerAnimation()
+                {
+                    length = -1,
+                }
+            );
         }
     }
 }

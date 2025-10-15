@@ -239,24 +239,24 @@ public static class MRJson
     private static bool TryParseRgb(string rgbString, out Color color)
     {
         color = Color.white;
-        string[] components = rgbString.Split(',');
+        string[] modules = rgbString.Split(',');
 
         try
         {
-            switch (components.Length)
+            switch (modules.Length)
             {
                 case 3: // R,G,B
-                    color.r = float.Parse(components[0].Trim());
-                    color.g = float.Parse(components[1].Trim());
-                    color.b = float.Parse(components[2].Trim());
+                    color.r = float.Parse(modules[0].Trim());
+                    color.g = float.Parse(modules[1].Trim());
+                    color.b = float.Parse(modules[2].Trim());
                     color.a = 1f;
                     return true;
 
                 case 4: // R,G,B,A
-                    color.r = float.Parse(components[0].Trim());
-                    color.g = float.Parse(components[1].Trim());
-                    color.b = float.Parse(components[2].Trim());
-                    color.a = float.Parse(components[3].Trim());
+                    color.r = float.Parse(modules[0].Trim());
+                    color.g = float.Parse(modules[1].Trim());
+                    color.b = float.Parse(modules[2].Trim());
+                    color.a = float.Parse(modules[3].Trim());
                     return true;
 
                 default:

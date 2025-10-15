@@ -34,11 +34,11 @@ sealed class Plugin : BaseUnityPlugin
     {
         Logger = base.Logger;
 
+        Enums.Init();
+
         On.RainWorld.OnModsInit += Extras.WrapInit(LoadPlugin);
         On.RainWorld.PostModsInit += RainWorld_PostModsInit;
         RegisterEntityIconSymbolProperties();
-
-        Enums.SoundID.Initialize();
 
         Logger.LogInfo("MRCustom is loaded!");
     }
@@ -50,6 +50,8 @@ sealed class Plugin : BaseUnityPlugin
             Hooks.ApplyHooks();
             MREvents.ApplyEvents();
         }
+
+        Enums.PlayerHandAnimations.RegisterValues();
 
         Futile.atlasManager.LoadAtlas("atlases/marError32");
         Futile.atlasManager.LoadAtlas("atlases/marError64");
@@ -100,7 +102,7 @@ sealed class Plugin : BaseUnityPlugin
 
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Rock, new EntityTypeSymbolProperties("Rock", "Symbol_Rock", Color.gray, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Spear, new EntityTypeSymbolProperties("Spear", "Symbol_Spear", Color.gray, 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Mushroom, new EntityTypeSymbolProperties("Mushroom", "Symbol_Mushroom", Custom.hexToColor("ECECEC"), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Mushroom, new EntityTypeSymbolProperties("Mushroom", "Symbol_Mushroom", Consts.IconColors.MushroomWhite, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.KarmaFlower, new EntityTypeSymbolProperties("Karma Flower", "smallKarma9-9", Custom.hexToColor("bba557"), 0.5f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SlimeMold, new EntityTypeSymbolProperties("Slime Mold", "Symbol_SlimeMold", Custom.hexToColor("ff9900"), 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SSOracleSwarmer, new EntityTypeSymbolProperties("SSOracleSwarmer", "Symbol_Neuron", Custom.hexToColor("FFFFFF"), 1f));
@@ -109,17 +111,17 @@ sealed class Plugin : BaseUnityPlugin
         //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.GlowWeed, new EntityTypeSymbolProperties("GlowWeed", "Symbol_GlowWeed", new Color(0.94705886f, 1f, 0.26862746f), 1f));
         //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Seed, new EntityTypeSymbolProperties("Seed", "Symbol_Seed", Custom.hexToColor("fffcb8"), 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.WaterNut, new EntityTypeSymbolProperties("Bubble Fruit", "Symbol_WaterNut", Color.blue, 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.JellyFish, new EntityTypeSymbolProperties("Jellyfish", "Symbol_JellyFish", Color.grey, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.JellyFish, new EntityTypeSymbolProperties("Jellyfish", "Symbol_JellyFish", Consts.IconColors.MediumGrey, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FirecrackerPlant, new EntityTypeSymbolProperties("Cherrybomb", "Symbol_Firecracker", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, new EntityTypeSymbolProperties("Grenade", "Symbol_StunBomb", new Color(0.9019608f, 0.05490196f, 0.05490196f), 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlareBomb, new EntityTypeSymbolProperties("Flashbang", "Symbol_FlashBomb", Custom.hexToColor("b4a8f6"), 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SporePlant, new EntityTypeSymbolProperties("Beehive", "Symbol_SporePlant", new Color(0.68235296f, 0.15686275f, 0.11764706f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, new EntityTypeSymbolProperties("Grenade", "Symbol_StunBomb", Consts.IconColors.DangerRed, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlareBomb, new EntityTypeSymbolProperties("Flashbang", "Symbol_FlashBomb", Consts.IconColors.FlareBombBlue, 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SporePlant, new EntityTypeSymbolProperties("Beehive", "Symbol_SporePlant", Consts.IconColors.FirecrackerPlantRed, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.PuffBall, new EntityTypeSymbolProperties("Spore Plant", "Symbol_PuffBall", Color.grey, 1f));
         //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FireEgg, new EntityTypeSymbolProperties("FireEgg", "Symbol_FireEgg", new Color(1f, 0.47058824f, 0.47058824f), 1f));
         //EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.SingularityBomb, new EntityTypeSymbolProperties("SingularityBomb", "Symbol_Singularity", new Color(0.01961f, 0.6451f, 0.85f), 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.FlyLure, new EntityTypeSymbolProperties("FlyLure", "Symbol_FlyLure", new Color(0.6784314f, 0.26666668f, 0.21176471f), 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.BubbleGrass, new EntityTypeSymbolProperties("BubbleGrass", "Symbol_BubbleGrass", new Color(0.05490196f, 0.69803923f, 0.23529412f), 1f));
-        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Lantern, new EntityTypeSymbolProperties("Lantern", "Symbol_Lantern", new Color(1f, 0.57254905f, 0.31764707f), 1f));
+        EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.Lantern, new EntityTypeSymbolProperties("Lantern", "Symbol_Lantern", Consts.IconColors.LanternOrange, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.DataPearl, new EntityTypeSymbolProperties("Pearl", "Symbol_Pearl", Color.grey, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.VultureMask, new EntityTypeSymbolProperties("Vulture Mask", "Kill_Vulture", Color.grey, 1f));
         EntityTypeSymbolPropertiesManager.AddEntityTypeSymbolProperties(AbstractPhysicalObject.AbstractObjectType.NeedleEgg, new EntityTypeSymbolProperties("Noodlefly Egg", "needleEggSymbol", new Color(0.5764706f, 0.16078432f, 0.2509804f), 1f));

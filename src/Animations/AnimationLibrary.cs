@@ -9,7 +9,7 @@
         where ExtEnumType : ExtEnum<ExtEnumType> 
         where OwnerType : PhysicalObject
     {
-        private readonly Dictionary<ExtEnumType, MRAnimation<OwnerType>> _animations = new();
+        private readonly Dictionary<ExtEnumType, RWAnimation<OwnerType>> _animations = new();
 
         /// <summary>
         /// Registers a new animation with an auto-generated ExtEnum key
@@ -17,7 +17,7 @@
         /// <param name="animationName">Name for the new animation key</param>
         /// <param name="animation">Animation to register</param>
         /// <returns>The generated ExtEnum key</returns>
-        public ExtEnumType RegisterAnimation(string animationName, MRAnimation<OwnerType> animation)
+        public ExtEnumType RegisterAnimation(string animationName, RWAnimation<OwnerType> animation)
         {
             var animationKey = (ExtEnumType)Activator.CreateInstance(
                 typeof(ExtEnumType),
@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="animationIndex">Existing ExtEnum key</param>
         /// <param name="animation">Animation to register</param>
-        public void RegisterAnimation(ExtEnumType animationIndex, MRAnimation<OwnerType> animation)
+        public void RegisterAnimation(ExtEnumType animationIndex, RWAnimation<OwnerType> animation)
         {
             _animations.Add(animationIndex, animation);
         }
@@ -44,7 +44,7 @@
         /// <param name="key">Animation key to look up</param>
         /// <param name="animation">Output animation if found</param>
         /// <returns>True if animation was found</returns>
-        public bool TryGetAnimation(ExtEnumType key, out MRAnimation<OwnerType> animation)
+        public bool TryGetAnimation(ExtEnumType key, out RWAnimation<OwnerType> animation)
         {
             return _animations.TryGetValue(key, out animation);
         }
@@ -54,7 +54,7 @@
         /// </summary>
         /// <param name="key">Animation key to look up</param>
         /// <returns>The found animation</returns>
-        public MRAnimation<OwnerType> GetAnimation(ExtEnumType key)
+        public RWAnimation<OwnerType> GetAnimation(ExtEnumType key)
         {
             if (_animations.TryGetValue(key, out var animation))
             {

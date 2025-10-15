@@ -114,6 +114,7 @@
 
   <!-- Copy main mod DLL to plugins -->
   <Copy SourceFiles="$(TargetPath)" DestinationFolder="../marcustom/plugins/" />
+  <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../marcustom/plugins/" />
 
   <!-- Copy dependencies (e.g., System.Text.Json) to libs -->
   <ItemGroup>
@@ -127,6 +128,7 @@
     <Target Name="CopyToRequiredModsLib" AfterTargets="PostBuildEvent">
     <Message Importance="high" Text="Copying DLL to slugcrafting, ccg, and designmyslugcat" />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\slugcrafting\lib" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\project017\lib" />
 	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\compartmentalizedcreaturegraphics\lib" />
 	    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\marle\source\repos\designmyslugcat\lib" />
     </Target>

@@ -1,4 +1,6 @@
-﻿namespace MRCustom;
+﻿using MRCustom.Extensions.Items.Weapons;
+
+namespace MRCustom;
 
 public static class Hooks
 {
@@ -7,8 +9,17 @@ public static class Hooks
     {
         ApplyRainWorldGameHooks();
 
-        ApplyPlayerHooks();
+        PlayerHooks.ApplyHooks();
         ApplyPlayerGraphicsHooks();
+        SlugcatHandHooks.ApplyHooks();
+
+        WeaponHooks.ApplyHooks();
+
+        SparkHooks.ApplyHooks();
+        StationaryEffectHooks.ApplyHooks();
+
+        PoleMimicHooks.ApplyHooks();
+        PoleMimicGraphicsHooks.ApplyHooks();
 
         ApplyRoomCameraHooks();
     }
@@ -20,8 +31,17 @@ public static class Hooks
 
         RemoveRainWorldGameHooks();
 
-        RemovePlayerHooks();
+        PlayerHooks.RemoveHooks();
         RemovePlayerGraphicsHooks();
+        SlugcatHandHooks.RemoveHooks();
+
+        WeaponHooks.RemoveHooks();
+
+        SparkHooks.RemoveHooks();
+        StationaryEffectHooks.RemoveHooks();
+
+        PoleMimicHooks.RemoveHooks();
+        PoleMimicGraphicsHooks.RemoveHooks();
 
         RemoveRoomCameraHooks();
     }
@@ -36,20 +56,6 @@ public static class Hooks
     private static void RemoveRainWorldGameHooks()
     {
         On.RainWorldGame.ctor -= RainWorldGameHooks.RainWorldGame_ctor;
-    }
-
-    // PLAYER
-
-    private static void ApplyPlayerHooks()
-    {
-        On.Player.NewRoom += PlayerHooks.Player_NewRoom;
-        On.Player.Update += PlayerHooks.Player_Update;
-    }
-
-    private static void RemovePlayerHooks()
-    {
-        On.Player.NewRoom -= PlayerHooks.Player_NewRoom;
-        On.Player.Update -= PlayerHooks.Player_Update;
     }
 
     // PLAYER GRAPHICS
