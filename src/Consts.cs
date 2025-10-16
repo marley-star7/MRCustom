@@ -48,6 +48,11 @@ public static class Consts
         public const int EatCounterResetValue = 30;
     }
 
+    public static class SolidColors
+    {
+        public static readonly Color Blue = Custom.hexToColor("0101ff");
+    }
+
     /// <summary>
     /// Used "ItemSymbol.ColorForItem(AbstractPhysicalObject.AbstractObjectType, int) : Color" To get most of these values.
     /// </summary>
