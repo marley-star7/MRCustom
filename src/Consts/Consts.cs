@@ -1,7 +1,7 @@
 ﻿using Menu;
 namespace MRCustom;
 
-public static class Consts
+public static partial class Consts
 {
     public static class LightningBoltTypes
     {
@@ -13,24 +13,6 @@ public static class Consts
         /// Will stay until manually removed.
         /// </summary>
         public const int Permanent = 1;
-    }
-
-    /// <summary>
-    /// A helper static class to assist in clearly defining the body chunks of creatures you are referencing via consts that refer to the index.
-    /// </summary>
-    public static class BodyChunkIndexes
-    {
-        public static class Player
-        {
-            public const int Head = 0;
-            public const int Body = 1;
-        }
-
-        public static class Lizard
-        {
-            public const int Head = 0;
-            public const int Body = 1;
-        }
     }
 
     public static class Distances
