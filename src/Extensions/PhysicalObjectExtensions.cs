@@ -77,4 +77,91 @@ public static class PhysicalObjectExtensions
     {
         physicalObject.GetPhysicalObjectMarData().AddModule(module);
     }
+
+    public static int GetClosestBodyChunkIndex(this PhysicalObject physicalObject, Vector2 pos)
+    {
+        int closestBodyChunkIndex = -1;
+        float closestDistanceSoFar = 9999999f;
+
+        for (int i = 0; i < physicalObject.bodyChunks.Length; i++)
+        {
+            var distance = Custom.Dist(physicalObject.bodyChunks[i].pos, pos);
+            // If we are not inside chunk rad, add chunk rads to the check, since it means we are outside teh chunk.
+            if (distance > physicalObject.bodyChunks[i].rad)
+            {
+                distance += physicalObject.bodyChunks[i].rad;
+            }
+
+            if (distance < closestDistanceSoFar)
+            {
+                closestDistanceSoFar = distance;
+                closestBodyChunkIndex = i;
+            }
+        }
+
+        return closestBodyChunkIndex;
+    }
+
+    public static BodyChunk GetClosestBodyChunk(this PhysicalObject physicalObject, Vector2 pos)
+    {
+        var closestBodyChunkIndex = physicalObject.GetClosestBodyChunkIndex(pos);
+
+        if (closestBodyChunkIndex == -1)
+        {
+            return null;
+        }
+
+        return physicalObject.bodyChunks[closestBodyChunkIndex];
+    }
+
+    /// <summary>
+    /// Gets the closest body chunk in a range,
+    /// Range check does not check for bodyChunks the pos is inside.
+    /// </summary>
+    /// <param name="physicalObject"></param>
+    /// <param name="pos"></param>
+    /// <param name="rangeRad"></param>
+    /// <returns></returns>
+    public static int GetClosestBodyChunkIndexInRange(this PhysicalObject physicalObject, Vector2 pos, float rangeRad)
+    {
+        int closestBodyChunkIndex = -1;
+        float closestDistanceSoFar = 99999999f;
+
+        for (int i = 0; i < physicalObject.bodyChunks.Length; i++)
+        {
+            var distance = Custom.Dist(physicalObject.bodyChunks[i].pos, pos);
+
+            // If we are not inside chunk rad, add chunk rads to the check, since it means we are outside teh chunk.
+            if (distance > physicalObject.bodyChunks[i].rad)
+            {
+                distance += physicalObject.bodyChunks[i].rad;
+
+                // Have to do range check then
+                if (distance > rangeRad)
+                {
+                    continue;
+                }
+            }
+
+            if (distance < closestDistanceSoFar)
+            {
+                closestDistanceSoFar = distance;
+                closestBodyChunkIndex = i;
+            }
+        }
+
+        return closestBodyChunkIndex;
+    }
+
+    public static BodyChunk GetClosestBodyChunkInRange(this PhysicalObject physicalObject, Vector2 pos, float rangeRad)
+    {
+        var closestBodyChunkIndex = physicalObject.GetClosestBodyChunkIndexInRange(pos, rangeRad);
+
+        if (closestBodyChunkIndex == -1)
+        {
+            return null;
+        }
+
+        return physicalObject.bodyChunks[closestBodyChunkIndex];
+    }
 }
