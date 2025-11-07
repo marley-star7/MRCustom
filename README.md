@@ -1,4 +1,4 @@
-# slugcrafting
+# MarCustom
 
 ## Modules
 are RW style modules, classes containing functions and data combined, able to be inherited.
